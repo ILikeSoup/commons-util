@@ -13,6 +13,7 @@ import com.soup.utils.empty.EmptyUtil;
  * @author	GaoXiang
  * @date	2018年1月12日 上午10:06:23 
  */
+@FunctionalInterface
 public interface ListFilter<T> {
 	
 	boolean filter(T obj);
@@ -43,11 +44,22 @@ public interface ListFilter<T> {
 	 * @return
 	 */
 	public static <T> T findFirst(Collection<T> all, ListFilter<T> filter) {
+		return find(all, filter, 0);
+	}
+	
+	/**
+	 * 通过筛选器筛选出第index个满足条件的元素
+	 * @param all
+	 * @param filter
+	 * @param index
+	 * @return
+	 */
+	public static <T> T find(Collection<T> all, ListFilter<T> filter, int index) {
 		if(EmptyUtil.isEmpty(all)) {
 			return null;
 		}
 		for(T o : all) {
-			if(filter.filter(o)) {
+			if(filter.filter(o) && --index < 0) {
 				return o;
 			}
 		}
