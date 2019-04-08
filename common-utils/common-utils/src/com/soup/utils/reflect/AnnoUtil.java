@@ -6,6 +6,8 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.lang.reflect.AnnotatedElement;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.soup.utils.empty.EmptyUtil;
 
@@ -38,28 +40,40 @@ public class AnnoUtil {
 	 * @return
 	 */
 	public static boolean hasCompoundAnno(AnnotatedElement annotatedElement, Class<? extends Annotation> anno) {
+		return hasCompoundAnno(annotatedElement.getAnnotations(), anno, new ArrayList<>());
+	}
+	
+	/**
+	 * @param annotatedElement
+	 * @param anno
+	 * @param except 排除已经解析的注解，防止相互引用导致的堆栈溢出
+	 * @return
+	 */
+	private static boolean hasCompoundAnno(AnnotatedElement annotatedElement, Class<? extends Annotation> anno, List<Annotation> except) {
 		if(null == annotatedElement) {
 			return false;
 		}
-		return hasCompoundAnno(annotatedElement.getAnnotations(), anno);
+		return hasCompoundAnno(annotatedElement.getAnnotations(), anno, except);
 	}
-
+	
 	/**
 	 * 判断annos注解数组中是否有被anno修饰的注解
 	 * @param annos
 	 * @param anno
+	 * @param except 
 	 * @return
 	 */
-	private static boolean hasCompoundAnno(Annotation[] annos, Class<? extends Annotation> anno) {
+	private static boolean hasCompoundAnno(Annotation[] annos, Class<? extends Annotation> anno, List<Annotation> except) {
 		if(EmptyUtil.isEmpty(annos)) {
 			return false;
 		}
 		for(Annotation one : annos) {
-			// 跳过元注解
-			if(isMetaAnno(one.annotationType())) {
+			// 跳过元注解和已经引用的注解
+			if(isMetaAnno(one.annotationType()) || except.contains(one)) {
 				continue;
 			}
-			if(one.annotationType() == anno || hasCompoundAnno(one.annotationType(), anno)) {
+			except.add(one);
+			if(one.annotationType() == anno || hasCompoundAnno(one.annotationType(), anno, except)) {
 				return true;
 			}
 		}
