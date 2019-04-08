@@ -44,12 +44,12 @@ public class EmptyUtil {
 
 	/**
 	 * 多个对象一起判断，所有对象空，返回true
-	 * @param objs 若为Null 返回 false
+	 * @param objs 若为Null 返回 true
 	 * @return
 	 */
 	public static boolean isEmptyEach(Object... objs) {
 		if(isEmpty(objs)) {
-			return false;
+			return true;
 		}
 		for(Object o : objs) {
 			if(!isEmpty(o)) {
@@ -59,21 +59,21 @@ public class EmptyUtil {
 		return true;
 	}
 
-	public static boolean isEmptyEach(List<Object> objs) {
+	public static <T> boolean isEmptyEach(List<T> objs) {
 		if(isEmpty(objs)) {
-			return false;
+			return true;
 		}
-		return isEmptyEach(objs.toArray(new Object[objs.size()]));
+		return isEmptyEach(objs.toArray());
 	}
 
 	/**
 	 * 多个对象一起判断，其中至少有一个对象空，返回true
-	 * @param objs 若为Null 返回false
+	 * @param objs 若为空返回 true
 	 * @return
 	 */
 	public static boolean isEmptyOne(Object... objs) {
 		if(isEmpty(objs)) {
-			return false;
+			return true;
 		}
 		for(Object o : objs) {
 			if(isEmpty(o)) {
@@ -83,11 +83,11 @@ public class EmptyUtil {
 		return false;
 	}
 
-	public static boolean isEmptyOne(List<Object> objs) {
+	public static <T> boolean isEmptyOne(List<T> objs) {
 		if(isEmpty(objs)) {
-			return false;
+			return true;
 		}
-		return isEmptyOne(objs.toArray(new Object[objs.size()]));
+		return isEmptyOne(objs.toArray());
 	}
 
 	/**
