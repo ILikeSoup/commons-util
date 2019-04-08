@@ -68,7 +68,7 @@ public class AnnoUtil {
 			return false;
 		}
 		for(Annotation one : annos) {
-			// 跳过元注解和已经引用的注解
+			// 跳过元注解和已解析的注解
 			if(isMetaAnno(one.annotationType()) || except.contains(one)) {
 				continue;
 			}
