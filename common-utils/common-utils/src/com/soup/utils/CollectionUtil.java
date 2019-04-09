@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import com.soup.utils.empty.EmptyUtil;
 
-public class ConnectionUtil {
+public class CollectionUtil {
 	
 	public static <T> boolean contains(Collection<T> collection, T t) {
 		if(collection == null) {
