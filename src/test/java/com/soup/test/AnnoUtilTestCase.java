@@ -27,6 +27,12 @@ public class AnnoUtilTestCase {
 	public void testHasCompoundAnno() {
 		Assert.assertTrue(AnnoUtil.hasCompoundAnno(Bb.class, Anno.class));
 		Assert.assertTrue(AnnoUtil.hasCompoundAnno(Cc.class, Anno.class));
+		Assert.assertTrue(AnnoUtil.hasCompoundAnno(CompoundAnno.class, Anno.class));
+	}
+	
+	@Test
+	public void testGetCompoundAnno() {
+		Assert.assertTrue(AnnoUtil.getCompoundAnno(Bb.class, Anno.class) != null);
 	}
 	
 	@Test

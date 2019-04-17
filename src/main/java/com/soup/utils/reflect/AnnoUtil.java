@@ -81,6 +81,45 @@ public class AnnoUtil {
 	}
 
 	/**
+	 * 在被修饰的注解中，查找指定注解，并获取查得的第一个
+	 * @param annotatedElement
+	 * @param anno
+	 * @return
+	 */
+	public static <T extends Annotation> T getCompoundAnno(AnnotatedElement annotatedElement, Class<T> anno) {
+		return getCompoundAnno(annotatedElement, anno, new ArrayList<>());
+	}
+	
+	private static <T extends Annotation> T getCompoundAnno(AnnotatedElement annotatedElement, Class<T> anno, List<Annotation> except) {
+		if(null == annotatedElement) {
+			return null;
+		}
+		return getCompoundAnno(annotatedElement.getAnnotations(), anno, except);
+	}
+	
+	@SuppressWarnings("unchecked")
+	private static <T extends Annotation> T  getCompoundAnno(Annotation[] annos, Class<T> anno, List<Annotation> except) {
+		if(EmptyUtil.isEmpty(annos)) {
+			return null;
+		}
+		for(Annotation one : annos) {
+			// 跳过元注解和已解析的注解
+			if(isMetaAnno(one.annotationType()) || except.contains(one)) {
+				continue;
+			}
+			except.add(one);
+			if(one.annotationType() == anno) {
+				return (T) one;
+			}
+			T compoundAnno = getCompoundAnno(one.annotationType(), anno, except);
+			if(compoundAnno != null) {
+				return compoundAnno;
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * 元注解判断
 	 * @param anno
 	 * @return
