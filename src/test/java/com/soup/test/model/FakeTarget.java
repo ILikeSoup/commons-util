@@ -2,7 +2,7 @@ package com.soup.test.model;
 
 import java.util.Date;
 
-public class FakeTarget {
+public class FakeTarget implements Ageable {
 	private Date birthday;
 	private int age;
 	private SubTarget target;
@@ -28,6 +28,7 @@ public class FakeTarget {
 	public void setTarget(SubTarget target) {
 		this.target = target;
 	}
+
 	@Override
 	public String toString() {
 		return "FakeTarget [birthday=" + birthday + ", age=" + age + ", target=" + target + "]";
